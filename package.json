@@ -1,0 +1,28 @@
+{
+  "name": "npm-switch",
+  "version": "0.0.1",
+  "description": "quick switch npm registry in npmjs.org or npm.taobao.org",
+  "bin": {
+    "npm-switch": "bin/index.js"
+  },
+  "scripts": {},
+  "keywords": [
+    "npm",
+    "taobao",
+    "source"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peakchen90/npm-switch"
+  },
+  "bugs": {
+    "url": "https://github.com/peakchen90/npm-switch/issues"
+  },
+  "author": "peakchen90 <1558267774@qq.com>",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "shelljs": "^0.7.7",
+    "yargs": "^7.1.0"
+  }
+}
