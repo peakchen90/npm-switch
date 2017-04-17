@@ -6,10 +6,14 @@
 npm install -g npm-switch
 ```
 
-## Option
+## 命令行
 ```
 Options:
   -n, --npm     切换到 npm.org 镜像                                    [boolean]
   -t, --taobao  切换到 npm.taobao.org 镜像                             [boolean]
   -h, --help    Show help                                              [boolean]
+
+Examples:
+  npm-switch -n
+  npm-switch --taobao
 ```

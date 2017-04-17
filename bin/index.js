@@ -10,10 +10,9 @@ const argv = require('yargs')
     describe: '切换到 npm.taobao.org 镜像',
     boolean: true
   })
-  .choices('i',['a','b','c'])
   .help('h')
   .alias('h', 'help')
-  .usage('npm-switch [option]')
+  .example('npm-switch -n\nnpm-switch --taobao')
   .argv
 
 const { npm, taobao } = argv
