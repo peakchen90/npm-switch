@@ -18,17 +18,41 @@ const argv = require('yargs')
 const { npm, taobao } = argv
 const shell = require('shelljs')
 const chalk = require('chalk')
+const inquirer = require('inquirer')
 
 if (npm) {
-  let s = shell.exec('npm config set registry https://registry.npmjs.org')
-  if (s.code === 0) {
-    console.log(chalk.bgGreen.black(' SUCCESS ') + chalk.green(getRegistry()))
-  } else {
-    console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('set npm registry failure'))
-  }
+  changeRegistry('npm')
+} else if (taobao) {
+  changeRegistry('taobao')
 } else {
-  let s = shell.exec('npm config set registry https://registry.npm.taobao.org')
-  if (s.code === 0) {
+  inquirer.prompt({
+    type: 'list',
+    name: 'registry',
+    message: 'please choose a registry',
+    choices: ['✔ Taobao (https://registry.npm.taobao.org)', '✔ Npm (https://registry.npmjs.org)'],
+    suffix: ' ✍ '
+  }).then(answer => {
+    let registry = answer.registry
+    registry = registry.split(' ')[1] || ''
+    console.log(chalk.yellow('please wait...'))
+    changeRegistry(registry.toLowerCase())
+  })
+}
+
+/**
+ * 切换镜像
+ */
+function changeRegistry(registry) {
+  let ret
+  if (registry === 'taobao') {
+    ret = shell.exec('npm config set registry https://registry.npm.taobao.org')
+  } else if (registry === 'npm') {
+    ret = shell.exec('npm config set registry https://registry.npmjs.org')
+  }
+  if (!ret) {
+    console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('unknown registry'))
+  }
+  if (ret.code === 0) {
     console.log(chalk.bgGreen.black(' SUCCESS ') + chalk.green(getRegistry()))
   } else {
     console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('set npm registry failure'))
