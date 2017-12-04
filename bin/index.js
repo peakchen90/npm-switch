@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const argv = require('yargs')
+var argv = require('yargs')
   .option('n', {
     alias: 'npm',
     describe: '切换到 npm.org 镜像',
@@ -15,10 +15,11 @@ const argv = require('yargs')
   .example('npm-switch -n\nnpm-switch --taobao')
   .argv
 
-const { npm, taobao } = argv
-const shell = require('shelljs')
-const chalk = require('chalk')
-const inquirer = require('inquirer')
+var npm = argv.npm
+var taobao = argv.taobao
+var shell = require('shelljs')
+var chalk = require('chalk')
+var inquirer = require('inquirer')
 
 if (npm) {
   changeRegistry('npm')
@@ -32,7 +33,7 @@ if (npm) {
     choices: ['✔ Taobao (https://registry.npm.taobao.org)', '✔ Npm (https://registry.npmjs.org)'],
     suffix: ' ✍ '
   }).then(answer => {
-    let registry = answer.registry
+    var registry = answer.registry
     registry = registry.split(' ')[1] || ''
     console.log(chalk.yellow('please wait...'))
     changeRegistry(registry.toLowerCase())
@@ -43,7 +44,7 @@ if (npm) {
  * 切换镜像
  */
 function changeRegistry(registry) {
-  let ret
+  var ret
   if (registry === 'taobao') {
     ret = shell.exec('npm config set registry https://registry.npm.taobao.org')
   } else if (registry === 'npm') {
@@ -63,7 +64,7 @@ function changeRegistry(registry) {
  * 获取仓库镜像
  */
 function getRegistry() {
-  let s = shell.exec('npm config get registry')
+  var s = shell.exec('npm config get registry')
   if (s.code === 0) {
     return ' npm registry: ' + s.stdout
   }

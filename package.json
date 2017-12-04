@@ -1,6 +1,6 @@
 {
   "name": "npm-switch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "quick switch npm registry in npmjs.org or npm.taobao.org",
   "bin": {
     "npm-switch": "bin/index.js"
