@@ -1,20 +1,20 @@
 # npm-switch
-快速选择 npm 镜像(https://registry.npmjs.org 或者 https://registry.npm.taobao.org)
+快速选择 NPM 或者 YARN 镜像(https://registry.npmjs.org 或者 https://registry.npm.taobao.org | https://registry.yarnpkg.com)
 
 ## 安装
 ```bash
-npm install -g npm-switch
+npm i -g npm-switch
 ```
 
 ## 命令行
 ```
 Options:
-  -n, --npm     切换到 npm.org 镜像                                    [boolean]
-  -t, --taobao  切换到 npm.taobao.org 镜像                             [boolean]
-  -h, --help    Show help                                             [boolean]
+  -o, --official    切换到NPM官方镜像                     [boolean]
+  -t, --taobao      切换到淘宝镜像                        [boolean]
+  -h, --help        显示帮助信息                          [boolean]
 
 Examples:
   npm-switch  # choose with keyboard
-  npm-switch -n
+  npm-switch -o
   npm-switch --taobao
 ```

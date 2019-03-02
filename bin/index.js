@@ -1,36 +1,59 @@
 #!/usr/bin/env node
+
 var argv = require('yargs')
-  .option('n', {
-    alias: 'npm',
-    describe: '切换到 npm.org 镜像',
+  .option('o', {
+    alias: 'official',
+    describe: '切换到NPM官方镜像',
     boolean: true
   })
   .option('t', {
     alias: 'taobao',
-    describe: '切换到 npm.taobao.org 镜像',
+    describe: '切换到淘宝镜像',
     boolean: true
   })
   .help('h')
   .alias('h', 'help')
-  .example('npm-switch -n\nnpm-switch --taobao')
+  .example('npm-switch -o\nnpm-switch --taobao')
   .argv
 
-var npm = argv.npm
+var official = argv.official
 var taobao = argv.taobao
 var shell = require('shelljs')
 var chalk = require('chalk')
 var inquirer = require('inquirer')
 
-if (npm) {
-  changeRegistry('npm')
+// 仓库地址
+var registryMap = {
+  npm: {
+    official: 'https://registry.npmjs.org',
+    taobao: 'https://registry.npm.taobao.org'
+  },
+  yarn: {
+    official: 'https://registry.yarnpkg.com',
+    taobao: 'https://registry.npm.taobao.org'
+  }
+}
+
+// check if installed yarn
+var isInstalledYarn = !!shell.which('yarn');
+
+if (official) {
+  changeRegistry('official')
 } else if (taobao) {
   changeRegistry('taobao')
 } else {
+  var choices = ['✔ Taobao (' + registryMap.npm.taobao + ')']
+  if (isInstalledYarn) {
+    choices.push('✔ Official (' + registryMap.npm.official + ' | ' + registryMap.yarn.official + ')')
+  } else {
+    choices.push('✔ Official (' + registryMap.npm.official + ')')
+  }
+
   inquirer.prompt({
     type: 'list',
     name: 'registry',
     message: 'please choose a registry',
-    choices: ['✔ Taobao (https://registry.npm.taobao.org)', '✔ Npm (https://registry.npmjs.org)'],
+    choices: choices,
     suffix: ' ✍ '
   }).then(answer => {
     var registry = answer.registry
@@ -41,31 +64,62 @@ if (npm) {
 }
 
 /**
- * 切换镜像
+ * 切换npm镜像
+ * @param {String} registry
  */
 function changeRegistry(registry) {
-  var ret
-  if (registry === 'taobao') {
-    ret = shell.exec('npm config set registry https://registry.npm.taobao.org')
-  } else if (registry === 'npm') {
-    ret = shell.exec('npm config set registry https://registry.npmjs.org')
-  }
-  if (!ret) {
+  if (!registry) {
     console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('unknown registry'))
+    return
   }
+
+  var ret = shell.exec('npm config set registry ' + registryMap.npm[registry])
   if (ret.code === 0) {
-    console.log(chalk.bgGreen.black(' SUCCESS ') + chalk.green(getRegistry()))
+    console.log(chalk.bgGreen.black(' SUCCESS ') + chalk.green(getRegistry('npm')))
   } else {
     console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('set npm registry failure'))
+  }
+
+  // change yarn registry
+  if (isInstalledYarn) {
+    changeYarnRegistry(registry);
+  }
+  process.exit(0);
+}
+
+/**
+ * 切换yarn镜像
+ * @param {String} registry
+ */
+function changeYarnRegistry(registry) {
+  console.log(chalk.yellow('Yarn registry changing...'))
+  if (!registry) {
+    console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('unknown registry'))
+    return
+  }
+
+  var ret = shell.exec('yarn config set registry ' + registryMap.yarn[registry])
+  if (ret.code === 0) {
+    console.log(chalk.bgGreen.black(' SUCCESS ') + chalk.green(getRegistry('yarn')))
+  } else {
+    console.log(chalk.bgRed.black(' FAILURE ') + chalk.red('set yarn registry failure'))
   }
 }
 
 /**
  * 获取仓库镜像
  */
-function getRegistry() {
-  var s = shell.exec('npm config get registry')
-  if (s.code === 0) {
-    return ' npm registry: ' + s.stdout
+function getRegistry(type) {
+  if (type === 'npm') {
+    var s = shell.exec('npm config get registry')
+    if (s.code === 0) {
+      return ' npm registry: ' + s.stdout
+    }
+  } else if (type === 'yarn') {
+    var s = shell.exec('yarn config get registry')
+    if (s.code === 0) {
+      return ' yarn registry: ' + s.stdout
+    }
   }
+  return '';
 }
