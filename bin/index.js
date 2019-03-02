@@ -11,13 +11,16 @@ var argv = require('yargs')
     describe: '切换到淘宝镜像',
     boolean: true
   })
+  .option('v', {
+    alias: 'version',
+    describe: '查看版本信息',
+    boolean: true
+  })
   .help('h')
   .alias('h', 'help')
   .example('npm-switch -o\nnpm-switch --taobao')
   .argv
 
-var official = argv.official
-var taobao = argv.taobao
 var shell = require('shelljs')
 var chalk = require('chalk')
 var inquirer = require('inquirer')
@@ -34,12 +37,18 @@ var registryMap = {
   }
 }
 
+// show version
+if(argv.version) {
+  console.log(require('../package.json').version);
+  process.exit(0);
+}
+
 // check if installed yarn
 var isInstalledYarn = !!shell.which('yarn');
 
-if (official) {
+if (argv.official) {
   changeRegistry('official')
-} else if (taobao) {
+} else if (argv.taobao) {
   changeRegistry('taobao')
 } else {
   var choices = ['✔ Taobao (' + registryMap.npm.taobao + ')']
