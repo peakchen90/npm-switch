@@ -9,7 +9,7 @@ npm i -g npm-switch
 ## 命令行
 ```
 Options:
-  -o, --official    切换到NPM官方镜像                     [boolean]
+  -o, --official    切换到 NPM or YARN 官方镜像           [boolean]
   -t, --taobao      切换到淘宝镜像                        [boolean]
   -h, --help        显示帮助信息                          [boolean]
 
