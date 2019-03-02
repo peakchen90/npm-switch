@@ -18,7 +18,7 @@ var argv = require('yargs')
   })
   .help('h')
   .alias('h', 'help')
-  .example('npm-switch -o\nnpm-switch --taobao')
+  .example('npm-switch #choose with keyboard\nnpm-switch -o\nnpm-switch --taobao')
   .argv
 
 var shell = require('shelljs')
