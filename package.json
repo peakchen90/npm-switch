@@ -1,6 +1,6 @@
 {
   "name": "npm-switch",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "quick switch npm registry in official registry or taobao registry",
   "bin": {
     "npm-switch": "bin/index.js"

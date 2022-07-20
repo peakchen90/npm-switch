@@ -29,11 +29,11 @@ var inquirer = require('inquirer')
 var registryMap = {
   npm: {
     official: 'https://registry.npmjs.org',
-    taobao: 'https://registry.npm.taobao.org'
+    taobao: 'https://registry.npmmirror.com'
   },
   yarn: {
     official: 'https://registry.yarnpkg.com',
-    taobao: 'https://registry.npm.taobao.org'
+    taobao: 'https://registry.npmmirror.com'
   }
 }
 
