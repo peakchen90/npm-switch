@@ -1,5 +1,5 @@
 # npm-switch
-快速选择 NPM 或者 YARN 镜像(https://registry.npmjs.org 或者 https://registry.npm.taobao.org | https://registry.yarnpkg.com)
+快速选择 NPM 或者 YARN 镜像(https://registry.npmjs.org 或者 https://registry.npmmirror.com | https://registry.yarnpkg.com)
 
 ## 安装
 ```bash
